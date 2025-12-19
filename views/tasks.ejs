@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tasks</title>
+</head>
+<body>
+
+<h1>Tasks List</h1>
+
+<% if (tasks.length === 0) { %>
+    <p>No tasks found.</p>
+<% } %>
+
+<ul>
+    <% tasks.forEach(task => { %>
+        <li>
+            <strong><%= task.title %></strong>
+            | Status: <%= task.status %>
+            | Client: <%= task.client_name || "N/A" %>
+        </li>
+    <% }) %>
+</ul>
+
+<br>
+<a href="/dashboard">Back to Dashboard</a>
+
+</body>
+</html>

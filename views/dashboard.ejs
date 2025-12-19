@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+    <style>
+        /* SIMPLE styling so samajh aaye */
+        .cards {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome <%= user.email %></h1>
+    <p>You are logged in successfully.</p>
+
+    <hr>
+
+    <!-- ================= CARDS ================= -->
+    <h2>Dashboard Stats</h2>
+
+    <div class="cards">
+        <div class="card">
+            <p>Active Clients</p>
+            <h2><%= activeClients %></h2>
+        </div>
+
+        <div class="card">
+            <p>Open Tasks</p>
+            <h2><%= openTasks %></h2>
+        </div>
+
+        <div class="card">
+            <p>Paid Invoices</p>
+            <h2><%= paidInvoices %></h2>
+        </div>
+
+        <div class="card">
+            <p>Unpaid Invoices</p>
+            <h2><%= unpaidInvoices %></h2>
+        </div>
+
+        <div class="card">
+            <p>Overdue Invoices</p>
+            <h2><%= overdueInvoices %></h2>
+        </div>
+    </div>
+
+    <!-- ================= LATEST CLIENTS TABLE ================= -->
+    <h2>Latest Clients</h2>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+        </tr>
+
+        <% if (latestClients && latestClients.length > 0) { %>
+            <% latestClients.forEach(client => { %>
+                <tr>
+                    <td><%= client.name %></td>
+                    <td><%= client.email %></td>
+                    <td><%= client.status %></td>
+                </tr>
+            <% }) %>
+        <% } else { %>
+            <tr>
+                <td colspan="3">No clients found</td>
+            </tr>
+        <% } %>
+    </table>
+
+    <!-- ================= UPCOMING TASKS TABLE ================= -->
+    <h2>Upcoming Tasks</h2>
+
+    <table>
+        <tr>
+            <th>Task</th>
+            <th>Due Date</th>
+            <th>Status</th>
+        </tr>
+
+        <% if (upcomingTasks && upcomingTasks.length > 0) { %>
+            <% upcomingTasks.forEach(task => { %>
+                <tr>
+                    <td><%= task.title %></td>
+                    <td><%= task.due_date %></td>
+                    <td><%= task.status %></td>
+                </tr>
+            <% }) %>
+        <% } else { %>
+            <tr>
+                <td colspan="3">No upcoming tasks</td>
+            </tr>
+        <% } %>
+    </table>
+
+    <a href="/logout">Logout</a>
+
+</body>
+</html>
+
+
+
+

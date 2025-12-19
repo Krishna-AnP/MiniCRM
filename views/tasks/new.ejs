@@ -1,0 +1,70 @@
+<style>
+  .task-card {
+    max-width: 420px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  }
+
+  .task-card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .task-card label {
+    font-weight: 500;
+    margin-top: 10px;
+  }
+
+  .task-card input,
+  .task-card textarea,
+  .task-card select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+  }
+
+  .task-card button {
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 12px;
+    text-decoration: none;
+  }
+</style>
+
+<div class="task-card">
+  <h2>New Task for <%= client.name %></h2>
+
+  <form method="POST" action="/clients/<%= client.id %>/tasks">
+
+    <label>Title</label>
+    <input type="text" name="title" required>
+
+    <label>Description</label>
+    <textarea name="description"></textarea>
+
+    <label>Status</label>
+    <select name="status">
+      <option value="pending">Pending</option>
+      <option value="completed">Completed</option>
+    </select>
+
+    <label>Due Date</label>
+    <input type="date" name="due_date">
+
+    <button type="submit" class="btn btn-primary">
+      Create Task
+    </button>
+  </form>
+
+  <a class="back-link" href="/clients/<%= client.id %>">
+    ← Back to Client
+  </a>
+</div>

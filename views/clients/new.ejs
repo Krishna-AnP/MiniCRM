@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add New Client</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 30px;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            max-width: 500px;
+            border-radius: 6px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Add New Client</h2>
+
+<form action="/clients/new" method="POST">
+    <input type="text" name="name" placeholder="Client Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="text" name="phone" placeholder="Phone">
+    
+    <select name="status">
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+    </select>
+
+    <button type="submit">Save Client</button>
+</form>
+
+<br>
+<a href="/clients">← Back to Clients</a>
+
+</body>
+</html>
