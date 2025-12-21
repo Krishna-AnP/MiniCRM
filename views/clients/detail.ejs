@@ -1,171 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Client Detail</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1 {
-            margin-bottom: 5px;
-        }
-        a {
-            text-decoration: none;
-            color: #007bff;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        .section {
-            margin-top: 30px;
-        }
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+<style>
+    .top-buttons {
+        margin: 20px 0;
+        display: flex;
+        gap: 15px;
+    }
+    .top-buttons a {
+        padding: 12px 25px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+    }
+    .btn-task { background: #007bff; }
+    .btn-invoice { background: #28a745; }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+    }
+</style>
 
-        /* Extra top buttons */
-        .top-buttons {
-            margin: 20px 0;
-            display: flex;
-            gap: 15px; /* spacing between buttons */
-        }
-        .top-buttons a {
-            display: inline-block;
-            padding: 12px 25px;
-            border-radius: 8px;
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .top-buttons a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-        }
-        /* Colors for each button */
-        .top-buttons .btn-task { background: #007bff; }
-        .top-buttons .btn-invoice { background: #28a745; }
-    </style>
-</head>
-<body>
+<a href="/clients">⬅ Back to Clients</a>
 
-    <!-- Back link -->
-    <a href="/clients">⬅ Back to Clients</a>
-
-    <!-- Extra top buttons (linked to existing forms) -->
-    <div class="top-buttons">
-    <a href="/clients/<%= client.id %>/tasks/new" class="btn-task">
-        ➕ New Task
-    </a>
-
-    <a href="/clients/<%= client.id %>/invoices/new" class="btn-invoice">
-        ➕ New Invoice
-    </a>
+<div class="top-buttons">
+    <a href="/clients/<%= client.id %>/tasks/new" class="btn-task">➕ New Task</a>
+    <a href="/clients/<%= client.id %>/invoices/new" class="btn-invoice">➕ New Invoice</a>
 </div>
 
+<h1><%= client.name %></h1>
+<p><strong>Email:</strong> <%= client.email %></p>
+<p><strong>Status:</strong> <%= client.status %></p>
 
-    <!-- Client Info -->
-    <h1><%= client.name %></h1>
-    <p><strong>Email:</strong> <%= client.email %></p>
-    <p><strong>Status:</strong> <%= client.status %></p>
+<h2>Tasks</h2>
 
-    <!-- Contacts -->
-    <div class="section">
-        <div class="section-header">
-            <h2>Contacts</h2>
-            <a href="/contacts/add?clientId=<%= client.id %>">➕ Add Contact</a>
-        </div>
+<% if (tasks.length === 0) { %>
+    <p>No tasks found.</p>
+<% } else { %>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Due Date</th>
+    </tr>
+    <% tasks.forEach(task => { %>
+        <tr>
+            <td><%= task.title %></td>
+            <td><%= task.status %></td>
+            <td><%= task.due_date %></td>
+        </tr>
+    <% }) %>
+</table>
+<% } %>
 
-        <% if (contacts.length === 0) { %>
-            <p>No contacts found.</p>
-        <% } else { %>
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                </tr>
+<h2>Invoices</h2>
 
-                <% contacts.forEach(contact => { %>
-                    <tr>
-                        <td><%= contact.name %></td>
-                        <td><%= contact.phone %></td>
-                        <td><%= contact.email %></td>
-                    </tr>
-                <% }) %>
-            </table>
-        <% } %>
-    </div>
-
-    <!-- Tasks -->
-    <div class="section">
-        <div class="section-header">
-            <h2>Tasks</h2>
-            <!-- Existing section button -->
-            <a href="/clients/<%= client.id %>/tasks/new">➕ Add Task</a>
-        </div>
-
-        <% if (tasks.length === 0) { %>
-            <p>No tasks found.</p>
-        <% } else { %>
-            <table>
-                <tr>
-                    <th>Title</th>
-                    <th>Status</th>
-                    <th>Due_Date</th>
-                </tr>
-
-                <% tasks.forEach(task => { %>
-                    <tr>
-                        <td><%= task.title %></td>
-                        <td><%= task.status %></td>
-                        <td><%= task.due_date %></td>
-                    </tr>
-                <% }) %>
-            </table>
-        <% } %>
-    </div>
-
-    <!-- Invoices -->
-    <div class="section">
-        <div class="section-header">
-            <h2>Invoices</h2>
-            <!-- Existing section button -->
-            <a href="/clients/<%= client.id %>/invoices/new">➕ Add Invoice</a>
-        </div>
-
-        <% if (invoices.length === 0) { %>
-            <p>No invoices found.</p>
-        <% } else { %>
-            <table>
-                <tr>
-                    <th>Amount</th>
-                    <th>Status</th>
-                </tr>
-
-                <% invoices.forEach(invoice => { %>
-                    <tr>
-                        <td>₹ <%= invoice.amount %></td>
-                        <td><%= invoice.status %></td>
-                    </tr>
-                <% }) %>
-            </table>
-        <% } %>
-    </div>
-
-</body>
-</html>
+<% if (invoices.length === 0) { %>
+    <p>No invoices found.</p>
+<% } else { %>
+<table>
+    <tr>
+        <th>Amount</th>
+        <th>Status</th>
+    </tr>
+    <% invoices.forEach(invoice => { %>
+        <tr>
+            <td>₹ <%= invoice.amount %></td>
+            <td><%= invoice.status %></td>
+        </tr>
+    <% }) %>
+</table>
+<% } %>

@@ -1,46 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Tasks</title>
-  <style>
+<style>
     table {
-      border-collapse: collapse;
-      width: 80%;
+        border-collapse: collapse;
+        width: 80%;
     }
     th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: left;
+        border: 1px solid #ccc;
+        padding: 8px;
     }
-    th {
-      background: #f4f4f4;
-    }
-  </style>
-</head>
-<body>
+</style>
 
 <h1>Tasks List</h1>
 
 <table>
-  <tr>
-    <th>ID</th>
-    <th>Title</th>
-    <th>Status</th>
-    <th>Client</th>
-  </tr>
-
-  <% tasks.forEach(task => { %>
     <tr>
-      <td><%= task.id %></td>
-      <td><%= task.title %></td>
-      <td><%= task.status %></td>
-      <td><%= task.client_name %></td>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Client</th>
     </tr>
-  <% }) %>
+
+    <% tasks.forEach(task => { %>
+        <tr>
+            <td><%= task.id %></td>
+            <td><%= task.title %></td>
+            <td><%= task.status %></td>
+            <td><%= task.client_name %></td>
+        </tr>
+    <% }) %>
 </table>
-
-<br>
-<a href="/dashboard">Back to Dashboard</a>
-
-</body>
-</html>
