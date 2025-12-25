@@ -7,16 +7,17 @@ async function runSeed() {
     db.serialize(() => {
         console.log("Connected to SQLite database");
 
-        // USERS
+        // ================= USERS (⭐ role added)
         db.run(`
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email TEXT UNIQUE NOT NULL,
-                password_hash TEXT NOT NULL
+                password_hash TEXT NOT NULL,
+                role TEXT NOT NULL
             )
         `);
 
-        // CLIENTS
+        // ================= CLIENTS
         db.run(`
             CREATE TABLE IF NOT EXISTS clients (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,7 +28,7 @@ async function runSeed() {
             )
         `);
 
-        // CONTACTS
+        // ================= CONTACTS
         db.run(`
             CREATE TABLE IF NOT EXISTS contacts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,7 +38,7 @@ async function runSeed() {
             )
         `);
 
-        // TASKS ❌ NO description here
+        // ================= TASKS
         db.run(`
             CREATE TABLE IF NOT EXISTS tasks (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,7 +49,7 @@ async function runSeed() {
             )
         `);
 
-        // INVOICES
+        // ================= INVOICES
         db.run(`
             CREATE TABLE IF NOT EXISTS invoices (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -58,14 +59,26 @@ async function runSeed() {
             )
         `);
 
-        // ADMIN USER
+        // ================= USERS DATA (⭐ MULTI ROLE)
         db.run(
-            `INSERT OR IGNORE INTO users (email, password_hash)
-             VALUES (?, ?)`,
-            ["admin@gmail.com", hashedPassword]
+            `INSERT OR IGNORE INTO users (email, password_hash, role)
+             VALUES (?, ?, ?)`,
+            ["superadmin@gmail.com", hashedPassword, "superadmin"]
         );
 
-        // CLIENTS
+        db.run(
+            `INSERT OR IGNORE INTO users (email, password_hash, role)
+             VALUES (?, ?, ?)`,
+            ["admin@gmail.com", hashedPassword, "admin"]
+        );
+
+        db.run(
+            `INSERT OR IGNORE INTO users (email, password_hash, role)
+             VALUES (?, ?, ?)`,
+            ["user@gmail.com", hashedPassword, "user"]
+        );
+
+        // ================= CLIENTS
         db.run(`
             INSERT OR IGNORE INTO clients (id, name, email, phone, status)
             VALUES
@@ -74,7 +87,7 @@ async function runSeed() {
                 (3, "Aman Verma", "aman@example.com", "9090909090", "Inactive")
         `);
 
-        // CONTACTS
+        // ================= CONTACTS
         db.run(`
             INSERT OR IGNORE INTO contacts (client_id, name, phone)
             VALUES
@@ -83,7 +96,7 @@ async function runSeed() {
                 (3, "Aman - Support", "9000033333")
         `);
 
-        // TASKS ✅ NO description
+        // ================= TASKS
         db.run(`
             INSERT OR IGNORE INTO tasks (client_id, title, due_date, status)
             VALUES
@@ -92,7 +105,7 @@ async function runSeed() {
                 (3, "Schedule meeting with Aman", "2025-01-15", "pending")
         `);
 
-        // INVOICES
+        // ================= INVOICES
         db.run(`
             INSERT OR IGNORE INTO invoices (client_id, amount, status)
             VALUES

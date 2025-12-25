@@ -113,7 +113,8 @@ function getClientDetail(req, res) {
                         client,
                         contacts,
                         tasks,
-                        invoices
+                        invoices,
+                        user: req.session.user
                     });
                 });
             });

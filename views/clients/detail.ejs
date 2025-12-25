@@ -13,28 +13,79 @@
     }
     .btn-task { background: #007bff; }
     .btn-invoice { background: #28a745; }
+
     table {
         width: 100%;
         border-collapse: collapse;
+        margin-top: 10px;
     }
     th, td {
         border: 1px solid #ccc;
         padding: 8px;
     }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 30px;
+    }
+
+    .add-link {
+        font-weight: bold;
+        text-decoration: none;
+    }
 </style>
 
 <a href="/clients">⬅ Back to Clients</a>
 
+<!-- TOP ACTION BUTTONS -->
+<% if (user.role !== "user") { %>
 <div class="top-buttons">
     <a href="/clients/<%= client.id %>/tasks/new" class="btn-task">➕ New Task</a>
     <a href="/clients/<%= client.id %>/invoices/new" class="btn-invoice">➕ New Invoice</a>
 </div>
+<% } %>
 
+<!-- CLIENT INFO -->
 <h1><%= client.name %></h1>
 <p><strong>Email:</strong> <%= client.email %></p>
 <p><strong>Status:</strong> <%= client.status %></p>
 
-<h2>Tasks</h2>
+<!-- CONTACTS SECTION -->
+<div class="section-header">
+    <h2>Contacts</h2>
+    <% if (user.role !== "user") { %>
+        <a class="add-link" href="/clients/<%= client.id %>/contacts/new">➕ Add Contact</a>
+    <% } %>
+</div>
+
+<% if (contacts.length === 0) { %>
+    <p>No contacts found.</p>
+<% } else { %>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+    </tr>
+    <% contacts.forEach(contact => { %>
+        <tr>
+            <td><%= contact.name %></td>
+            <td><%= contact.phone %></td>
+            <td><%= contact.email || "-" %></td>
+        </tr>
+    <% }) %>
+</table>
+<% } %>
+
+<!-- TASKS SECTION -->
+<div class="section-header">
+    <h2>Tasks</h2>
+    <% if (user.role !== "user") { %>
+        <a class="add-link" href="/clients/<%= client.id %>/tasks/new">➕ Add Task</a>
+    <% } %>
+</div>
 
 <% if (tasks.length === 0) { %>
     <p>No tasks found.</p>
@@ -55,7 +106,13 @@
 </table>
 <% } %>
 
-<h2>Invoices</h2>
+<!-- INVOICES SECTION -->
+<div class="section-header">
+    <h2>Invoices</h2>
+    <% if (user.role !== "user") { %>
+        <a class="add-link" href="/clients/<%= client.id %>/invoices/new">➕ Add Invoice</a>
+    <% } %>
+</div>
 
 <% if (invoices.length === 0) { %>
     <p>No invoices found.</p>

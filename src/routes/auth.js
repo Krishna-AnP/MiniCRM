@@ -32,10 +32,11 @@ router.post("/login", (req, res) => {
             return res.render("login", { error: "Invalid email or password" });
         }
 
-        // Set session
+        // ⭐ Set session (ROLE ADDED)
         req.session.user = {
             id: user.id,
-            email: user.email
+            email: user.email,
+            role: user.role
         };
 
         req.session.save(() => {
