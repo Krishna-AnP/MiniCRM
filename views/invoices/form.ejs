@@ -56,7 +56,7 @@
 <body>
     <h1>New Invoice for <%= client.name %></h1>
 
-    <!-- ✅ FIXED ACTION (TASKS JAISE) -->
+    <!--  FIXED ACTION  -->
     <form method="POST" action="/clients/<%= client.id %>/invoices/new">
         <label for="amount">Amount</label>
         <input type="number" name="amount" id="amount" placeholder="Enter amount" required>

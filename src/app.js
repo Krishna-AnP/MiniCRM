@@ -33,6 +33,16 @@ app.use(
   })
 );
 
+
+/* ======================
+   MAKE USER AVAILABLE TO ALL EJS FILES
+====================== */
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
+});
+
+
 /* ======================
    VIEW ENGINE
 ====================== */

@@ -2,7 +2,7 @@ const db = require("../db");
 
 async function getDashboardStats(req, res) {
     try {
-        // 🔐 Dashboard protected
+        //  Dashboard protected
         if (!req.session.user) {
             return res.redirect("/login");
         }

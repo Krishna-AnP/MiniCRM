@@ -11,7 +11,7 @@ function allowRoles(...roles) {
             return res.status(403).send("Access Denied");
         }
 
-        next(); // sab sahi → route allow
+        next(); // everything correct → route allow
     };
 }
 

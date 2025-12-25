@@ -8,7 +8,7 @@ const db = new sqlite3.Database("./database.sqlite", (err) => {
     }
 });
 
-// 🔥 ENSURE description column exists
+//  ENSURE description column exists
 db.run(
     "ALTER TABLE tasks ADD COLUMN description TEXT",
     () => {

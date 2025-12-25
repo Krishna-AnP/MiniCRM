@@ -74,9 +74,11 @@
 
 <div class="top-bar">
     <!-- Add Client -->
-    <a href="/clients/new">
-        <button class="btn btn-primary">+ Add New Client</button>
-    </a>
+    <% if (user && user.role !== 'user') { %> 
+        <a href="/clients/new">
+            <button class="btn btn-primary">+ Add New Client</button>
+        </a>
+    <% } %>
 
     <!-- Filter -->
     <form method="GET" action="/clients">
@@ -105,10 +107,15 @@
             <td><%= client.city || "-" %></td>
             <td><%= client.status %></td>
             <td>
-                <a class="view-link" href="/clients/<%= client.id %>">View</a>
+                <% if (user && user.role !== 'user') { %>
+                    <a class="view-link" href="/clients/<%= client.id %>">View</a>
+                <% } else { %>
+                    -
+                <% } %>
             </td>
         </tr>
     <% }) %>
+
 </table>
 
 </body>

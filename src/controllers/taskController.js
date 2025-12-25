@@ -31,7 +31,7 @@ exports.showNewTaskForm = (req, res) => {
                 return res.status(404).send("Client not found");
             }
 
-            // ✅ Render the correct form view
+            // Render the correct form view
             res.render("tasks/form", { client });
         }
     );

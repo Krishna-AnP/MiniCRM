@@ -33,7 +33,7 @@ function listClients(req, res) {
  * Show add new client form
  */
 function showNewClientForm(req, res) {
-    // 👉 form.ejs render hoga
+    //  form.ejs will render 
     res.render("clients/form");
 }
 

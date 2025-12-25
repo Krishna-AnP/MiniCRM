@@ -7,7 +7,7 @@ async function runSeed() {
     db.serialize(() => {
         console.log("Connected to SQLite database");
 
-        // ================= USERS (⭐ role added)
+        // ================= USERS (role added)
         db.run(`
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -59,7 +59,7 @@ async function runSeed() {
             )
         `);
 
-        // ================= USERS DATA (⭐ MULTI ROLE)
+        // ================= USERS DATA (MULTI ROLE)
         db.run(
             `INSERT OR IGNORE INTO users (email, password_hash, role)
              VALUES (?, ?, ?)`,

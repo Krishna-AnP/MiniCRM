@@ -4,7 +4,9 @@ const invoiceController = require("../controllers/invoiceController");
 const allowRoles = require("../middleware/roleMiddleware");
 
 // List all invoices
-router.get("/invoices", invoiceController.listInvoices);
+router.get("/invoices",
+    allowRoles("superadmin", "admin", "user"), 
+    invoiceController.listInvoices);
 
 // Show form to create new invoice for a client
 router.get("/clients/:id/invoices/new", 

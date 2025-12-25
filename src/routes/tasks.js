@@ -7,7 +7,9 @@ const { listTasks, showNewTaskForm, createTask } = taskController;
 
 // ================= TASK LIST =================
 // GET /tasks
-router.get("/tasks", listTasks);
+router.get("/tasks",
+    allowRoles("superadmin", "admin", "user"), 
+    listTasks);
 
 // ================= NEW TASK FORM =================
 // GET /clients/:id/tasks/new
