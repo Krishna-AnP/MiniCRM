@@ -23,7 +23,8 @@ function listClients(req, res) {
 
         res.render("clients/list", {
             clients: rows,
-            selectedStatus: status
+            selectedStatus: status,
+            user: req.session.user
         });
     });
 }
@@ -33,7 +34,6 @@ function listClients(req, res) {
  * Show add new client form
  */
 function showNewClientForm(req, res) {
-    //  form.ejs will render 
     res.render("clients/form");
 }
 
@@ -44,7 +44,6 @@ function showNewClientForm(req, res) {
 function createClient(req, res) {
     const { name, email, phone, status } = req.body;
 
-    // Basic validation
     if (!name || !email) {
         return res.status(400).send("Name and email are required.");
     }
@@ -63,7 +62,6 @@ function createClient(req, res) {
                 return res.status(500).send("Error creating client.");
             }
 
-            // New client detail page
             res.redirect(`/clients/${this.lastID}`);
         }
     );
@@ -122,9 +120,33 @@ function getClientDetail(req, res) {
     });
 }
 
+/**
+ * POST /clients/:id/delete
+ * Delete client + cascade delete
+ */
+function deleteClient(req, res) {
+    const clientId = req.params.id;
+
+    db.serialize(() => {
+        db.run("DELETE FROM contacts WHERE client_id = ?", [clientId]);
+        db.run("DELETE FROM tasks WHERE client_id = ?", [clientId]);
+        db.run("DELETE FROM invoices WHERE client_id = ?", [clientId]);
+
+        db.run("DELETE FROM clients WHERE id = ?", [clientId], function (err) {
+            if (err) {
+                console.error("Error deleting client:", err);
+                return res.status(500).send("Error deleting client");
+            }
+
+            res.redirect("/clients");
+        });
+    });
+}
+
 module.exports = {
     listClients,
     showNewClientForm,
     createClient,
-    getClientDetail
+    getClientDetail,
+    deleteClient
 };

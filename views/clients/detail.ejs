@@ -24,6 +24,28 @@
         padding: 8px;
     }
 
+    /* Action column styling */
+    td.action-cell {
+        text-align: center;
+        vertical-align: middle;
+        width: 80px;
+    }
+
+    /* Edit button styling */
+    .edit-btn {
+        display: inline-block;
+        padding: 6px 12px;
+        background-color: #2563eb;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .edit-btn:hover {
+        background-color: #1e40af;
+    }
+
     .section-header {
         display: flex;
         justify-content: space-between;
@@ -56,7 +78,19 @@
 <div class="section-header">
     <h2>Contacts</h2>
     <% if (user.role !== "user") { %>
-        <a class="add-link" href="/clients/<%= client.id %>/contacts/new">➕ Add Contact</a>
+        <a 
+            href="/clients/<%= client.id %>/contacts/new"
+            style="
+                padding:8px 14px;
+                background:#2563eb;
+                color:white;
+                border-radius:6px;
+                text-decoration:none;
+                font-weight:bold;
+            "
+        >
+            ➕ Add Contact
+        </a>
     <% } %>
 </div>
 
@@ -74,6 +108,13 @@
             <td><%= contact.name %></td>
             <td><%= contact.phone %></td>
             <td><%= contact.email || "-" %></td>
+        <td class="action-cell">
+        <% if (user.role !== "user") { %>
+            <a href="/contacts/<%= contact.id %>/edit" class="edit-btn"> Edit </a>
+        <% } else { %>
+            -
+        <% } %>
+        </td>
         </tr>
     <% }) %>
 </table>

@@ -1,3 +1,11 @@
+let seedHasRun = false;
+
+if (seedHasRun) {
+  console.log("Seed already executed, skipping...");
+  process.exit(0);
+}
+seedHasRun = true;
+
 const db = require("../src/db");
 const bcrypt = require("bcrypt");
 
@@ -37,6 +45,20 @@ async function runSeed() {
                 phone TEXT
             )
         `);
+        // ================= ADD EMAIL COLUMN TO CONTACTS (SAFE)
+        db.run(
+        `ALTER TABLE contacts ADD COLUMN email TEXT`,
+        (err) => {
+            if (err) {
+            // Ignore error if column already exists
+            if (!err.message.includes("duplicate column")) {
+                console.error("Error adding email column to contacts:", err.message);
+            }
+            } else {
+            console.log(" Email column added to contacts table");
+            }
+        }
+        );
 
         // ================= TASKS
         db.run(`
@@ -88,31 +110,91 @@ async function runSeed() {
         `);
 
         // ================= CONTACTS
-        db.run(`
-            INSERT OR IGNORE INTO contacts (client_id, name, phone)
-            VALUES
-                (1, "Rohan - Manager", "9000011111"),
-                (2, "Priya - HR", "9000022222"),
-                (3, "Aman - Support", "9000033333")
-        `);
+    db.run(`
+        INSERT INTO contacts (client_id, name, phone)
+        SELECT 1, 'Rohan - Manager', '9000011111'
+        WHERE NOT EXISTS (
+            SELECT 1 FROM contacts
+            WHERE client_id = 1 AND name = 'Rohan - Manager'
+        )
+    `);
+
+    db.run(`
+        INSERT INTO contacts (client_id, name, phone)
+        SELECT 2, 'Priya - HR', '9000022222'
+        WHERE NOT EXISTS (
+            SELECT 1 FROM contacts
+            WHERE client_id = 2 AND name = 'Priya - HR'
+        )
+    `);
+
+    db.run(`
+        INSERT INTO contacts (client_id, name, phone)
+        SELECT 3, 'Aman - Support', '9000033333'
+        WHERE NOT EXISTS (
+            SELECT 1 FROM contacts
+            WHERE client_id = 3 AND name = 'Aman - Support'
+        )
+    `);
+
 
         // ================= TASKS
-        db.run(`
-            INSERT OR IGNORE INTO tasks (client_id, title, due_date, status)
-            VALUES
-                (1, "Follow up with Rohan", "2025-01-10", "pending"),
-                (2, "Send proposal to Priya", "2025-01-12", "completed"),
-                (3, "Schedule meeting with Aman", "2025-01-15", "pending")
-        `);
+    db.run(`
+        INSERT INTO tasks (client_id, title, due_date, status)
+        SELECT 1, 'Follow up with Rohan', '2025-01-10', 'pending'
+        WHERE NOT EXISTS (
+            SELECT 1 FROM tasks
+            WHERE client_id = 1 AND title = 'Follow up with Rohan'
+        )
+    `);
+
+    db.run(`
+        INSERT INTO tasks (client_id, title, due_date, status)
+        SELECT 2, 'Send proposal to Priya', '2025-01-12', 'completed'
+        WHERE NOT EXISTS (
+            SELECT 1 FROM tasks
+            WHERE client_id = 2 AND title = 'Send proposal to Priya'
+        )
+    `);
+
+    db.run(`
+        INSERT INTO tasks (client_id, title, due_date, status)
+        SELECT 3, 'Schedule meeting with Aman', '2025-01-15', 'pending'
+        WHERE NOT EXISTS (
+            SELECT 1 FROM tasks
+            WHERE client_id = 3 AND title = 'Schedule meeting with Aman'
+        )
+    `);
+
 
         // ================= INVOICES
-        db.run(`
-            INSERT OR IGNORE INTO invoices (client_id, amount, status)
-            VALUES
-                (1, 15000, "paid"),
-                (2, 22000, "unpaid"),
-                (3, 18000, "pending")
-        `);
+    db.run(`
+        INSERT INTO invoices (client_id, amount, status)
+        SELECT 1, 15000, 'paid'
+        WHERE NOT EXISTS (
+            SELECT 1 FROM invoices
+            WHERE client_id = 1 AND amount = 15000
+        )
+    `);
+
+    db.run(`
+        INSERT INTO invoices (client_id, amount, status)
+        SELECT 2, 22000, 'unpaid'
+        WHERE NOT EXISTS (
+            SELECT 1 FROM invoices
+            WHERE client_id = 2 AND amount = 22000
+        )
+    `);
+
+    db.run(`
+        INSERT INTO invoices (client_id, amount, status)
+        SELECT 3, 18000, 'pending'
+        WHERE NOT EXISTS (
+            SELECT 1 FROM invoices
+            WHERE client_id = 3 AND amount = 18000
+        )
+    `);
+
 
         console.log("✅ Seeding completed");
     });

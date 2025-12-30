@@ -6,7 +6,8 @@ const {
     listClients,
     showNewClientForm,
     getClientDetail,
-    createClient
+    createClient,
+    deleteClient
 } = require("../controllers/clientController");
 
 const {
@@ -41,4 +42,5 @@ router.get("/:id",
     allowRoles("superadmin", "admin"),
     getClientDetail);
 
+router.post("/:id/delete", allowRoles("superadmin", "admin"), deleteClient);
 module.exports = router;

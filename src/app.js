@@ -10,6 +10,7 @@ const clientsRoutes = require("./routes/clients");
 const taskRoutes = require("./routes/tasks");
 const invoiceRoutes = require("./routes/invoiceRoutes");
 
+
 // Middleware
 const ensureAuthenticated = require("./middleware/authMiddleware");
 
@@ -74,6 +75,7 @@ app.use("/dashboard", dashboardRoutes);
 app.use("/clients", clientsRoutes);
 app.use("/", taskRoutes);
 app.use("/", invoiceRoutes);
+app.use("/", require("./routes/contacts"));
 
 /* ======================
    DEFAULT ROUTE
